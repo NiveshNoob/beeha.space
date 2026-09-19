@@ -47,6 +47,13 @@ button, input { font: inherit; }
 .episode-number { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; flex-shrink: 0; border-radius: 10px; color: var(--yellow); background: rgba(255,200,61,.08); font-weight: 900; }
 .episode-btn:hover:not(:disabled) .episode-number, .episode-btn.selected .episode-number { color: #111; background: rgba(0,0,0,.08); }
 .episode-name { font-size: .87rem; font-weight: 700; }
+.player-controls { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 24px; padding: 15px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); }
+.player-control, .report-control { min-height: 40px; padding: 0 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,.12); color: white; background: rgba(255,255,255,.06); font-size: .84rem; font-weight: 800; cursor: pointer; transition: .2s; }
+.player-control:hover:not(:disabled) { color: #111; background: var(--yellow); border-color: var(--yellow); }
+.player-control:disabled { opacity: .35; cursor: not-allowed; }
+.playing-episode { min-width: 140px; color: var(--yellow); font-size: .84rem; font-weight: 800; text-align: center; }
+.report-control { color: #ffb2b2; border-color: rgba(255,100,100,.3); }
+.report-control:hover { color: white; background: #b93333; border-color: #b93333; }
 .episode-error { padding: 50px; text-align: center; color: #888; }
 .hidden { display: none !important; }
 
@@ -63,4 +70,6 @@ button, input { font: inherit; }
     .section-header h2 { font-size: 1.6rem; }
     #episode-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
     .episode-btn { min-height: 62px; padding: 10px; }
+    .player-controls { gap: 8px; padding: 12px; }
+    .playing-episode { width: 100%; order: -1; }
 }

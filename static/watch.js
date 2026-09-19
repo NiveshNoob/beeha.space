@@ -14,8 +14,14 @@ const episodeHeadingCount = document.getElementById("episode-heading-count");
 const episodeGrid = document.getElementById("episode-grid");
 const episodeError = document.getElementById("episode-error");
 const watchFirst = document.getElementById("watch-first");
+const playerControls = document.getElementById("player-controls");
+const previousEpisode = document.getElementById("previous-episode");
+const nextEpisode = document.getElementById("next-episode");
+const reportEpisode = document.getElementById("report-episode");
+const playingEpisode = document.getElementById("playing-episode");
 
 let anime = null;
+let activeEpisode = null;
 
 function setImageWithFallback(img, primary, fallback) {
     img.src = primary;
@@ -96,7 +102,33 @@ function openEpisode(number, updateUrl = true) {
 
     document.querySelectorAll(".episode-btn.selected").forEach((button) => button.classList.remove("selected"));
     document.querySelector(`.episode-btn[data-episode="${number}"]`)?.classList.add("selected");
+    activeEpisode = Number(number);
+    updatePlayerControls();
     window.open(playerUrl, "_blank", "noopener");
+}
+
+function playableEpisodes() {
+    return (anime?.episodes || [])
+        .filter((item) => item.server1 || item.server2)
+        .map((item) => Number(item.episode))
+        .sort((a, b) => a - b);
+}
+
+function updatePlayerControls() {
+    const episodes = playableEpisodes();
+    const position = episodes.indexOf(activeEpisode);
+    const previous = episodes[position - 1];
+    const next = episodes[position + 1];
+
+    playerControls.classList.toggle("hidden", position === -1);
+    if (position === -1) return;
+
+    playingEpisode.textContent = `Playing episode ${activeEpisode}`;
+    previousEpisode.disabled = previous === undefined;
+    nextEpisode.disabled = next === undefined;
+    previousEpisode.onclick = () => openEpisode(previous);
+    nextEpisode.onclick = () => openEpisode(next);
+    reportEpisode.onclick = () => reportProblem(activeEpisode);
 }
 
 async function reportProblem(episode) {

@@ -42,6 +42,12 @@
             <span id="episode-heading-count" class="episode-count">0 episodes</span>
         </div>
         <div id="episode-grid"></div>
+        <div id="player-controls" class="player-controls hidden" aria-label="Episode controls">
+            <button id="previous-episode" class="player-control" type="button">← Previous</button>
+            <span id="playing-episode" class="playing-episode" aria-live="polite"></span>
+            <button id="next-episode" class="player-control" type="button">Next →</button>
+            <button id="report-episode" class="report-control" type="button">Report</button>
+        </div>
         <div id="episode-error" class="episode-error hidden">Unable to load episodes.</div>
     </section>
 </main>
