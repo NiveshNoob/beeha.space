@@ -1,0 +1,10 @@
+name: My Clueless First Friend
+released_date: 2023
+status: Completed
+anilist_link: https://anilist.co/anime/157295/Jijou-wo-Shiranai-Tenkousei-ga-Guigui-Kuru
+alt_name: 
+genre: 
+studio: 
+type: anime
+description: 
+total_episodes: 13

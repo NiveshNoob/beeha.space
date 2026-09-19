@@ -1,0 +1,10 @@
+name: Sword Art Online
+released_date: 2012
+status: Completed
+anilist_link: https://anilist.co/anime/11757/Sword-Art-Online
+alt_name: ソードアート・オンライン
+genre: Action
+studio: Adventure
+type: Fantasy
+description: Romance
+total_episodes: 25

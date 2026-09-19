@@ -50,16 +50,6 @@ button, input { font: inherit; }
 .episode-error { padding: 50px; text-align: center; color: #888; }
 .hidden { display: none !important; }
 
-#player-overlay { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 18px; }
-.player-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.82); backdrop-filter: blur(8px); }
-.player-modal { position: relative; z-index: 1; width: min(1200px,100%); max-height: calc(100vh - 36px); overflow: auto; border: 1px solid rgba(255,255,255,.08); border-radius: 18px; background: #0d0d0d; box-shadow: 0 40px 100px rgba(0,0,0,.55); }
-.player-head { min-height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 0 16px; border-bottom: 1px solid rgba(255,255,255,.06); }
-.player-close { width: 36px; height: 36px; border: none; border-radius: 10px; color: white; background: #1a1a1a; cursor: pointer; font-size: 1.4rem; }
-#episode-player { display: block; width: 100%; aspect-ratio: 16/9; border: 0; background: black; }
-.player-controls { display: flex; flex-wrap: wrap; gap: 10px; padding: 14px; }
-.player-controls button { min-height: 40px; padding: 0 14px; border-radius: 10px; color: white; background: #181818; border: 1px solid rgba(255,255,255,.08); cursor: pointer; }
-.player-controls button:hover, .player-controls button.active { color: #111; background: linear-gradient(135deg,var(--yellow),var(--gold)); }
-
 @media (max-width: 750px) {
     .navbar { padding: 0 18px; }
     .hero { min-height: auto; }

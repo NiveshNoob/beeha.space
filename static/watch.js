@@ -59,8 +59,6 @@ async function loadAnime() {
     watchFirst.disabled = !firstEpisode || !(firstEpisode.server1 || firstEpisode.server2);
     watchFirst.onclick = () => firstEpisode && openEpisode(firstEpisode.episode);
 
-    const selected = episodes.find((item) => Number(item.episode) === requestedEpisode);
-    if (selected) openEpisode(requestedEpisode, false);
 }
 
 function renderEpisodes(episodes, total) {
@@ -72,6 +70,7 @@ function renderEpisodes(episodes, total) {
         const button = document.createElement("button");
         button.type = "button";
         button.className = "episode-btn";
+        button.dataset.episode = String(number);
         button.disabled = !data || !(data.server1 || data.server2);
         button.innerHTML = `
             <span class="episode-number">${number}</span>
@@ -87,60 +86,17 @@ function openEpisode(number, updateUrl = true) {
     const data = anime?.episodes?.find((item) => Number(item.episode) === Number(number));
     if (!data) return;
 
-    const providers = [data.server1, data.server2].filter(Boolean);
-    if (!providers.length) return;
+    const playerUrl = data.server1 || data.server2;
+    if (!playerUrl) return;
 
     const watchUrl = `/watch?year=${encodeURIComponent(year)}&anime=${encodeURIComponent(animeFolder)}&episode=${encodeURIComponent(number)}`;
     if (updateUrl) {
         history.replaceState({}, "", watchUrl);
     }
 
-    showEpisodePlayer(number, data, providers);
-}
-
-function showEpisodePlayer(number, data, providers) {
-    const old = document.getElementById("player-overlay");
-    if (old) old.remove();
-
-    const overlay = document.createElement("div");
-    overlay.id = "player-overlay";
-    overlay.innerHTML = `
-        <div class="player-backdrop"></div>
-        <div class="player-modal" role="dialog" aria-modal="true" aria-label="Episode player">
-            <div class="player-head">
-                <strong>${escapeHtml(anime.name)} · Episode ${number}</strong>
-                <button class="player-close" type="button" aria-label="Close">×</button>
-            </div>
-            <iframe id="episode-player" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="origin"></iframe>
-            <div class="player-controls"></div>
-        </div>`;
-
-    const controls = overlay.querySelector(".player-controls");
-    const iframe = overlay.querySelector("#episode-player");
-    const close = () => overlay.remove();
-    overlay.querySelector(".player-close").addEventListener("click", close);
-    overlay.querySelector(".player-backdrop").addEventListener("click", close);
-
-    providers.forEach((url, index) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.textContent = `Server ${index + 1}`;
-        button.addEventListener("click", () => {
-            iframe.src = url;
-            controls.querySelectorAll("button").forEach((item) => item.classList.remove("active"));
-            button.classList.add("active");
-        });
-        controls.appendChild(button);
-        if (index === 0) button.click();
-    });
-
-    const report = document.createElement("button");
-    report.type = "button";
-    report.textContent = "⚠ Report";
-    report.addEventListener("click", () => reportProblem(number));
-    controls.appendChild(report);
-
-    document.body.appendChild(overlay);
+    document.querySelectorAll(".episode-btn.selected").forEach((button) => button.classList.remove("selected"));
+    document.querySelector(`.episode-btn[data-episode="${number}"]`)?.classList.add("selected");
+    window.open(playerUrl, "_blank", "noopener");
 }
 
 async function reportProblem(episode) {
