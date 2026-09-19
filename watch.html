@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Beeha</title>
+
+    <link rel="stylesheet" href="watch.css">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+
+<body>
+
+
+<header class="navbar">
+
+    <a
+        href="index.html"
+        class="logo"
+    >
+        🐝 Beeha
+    </a>
+
+    <a
+        href="index.html"
+        class="back-button"
+    >
+        ← Back
+    </a>
+
+</header>
+
+
+<main>
+
+    <section class="hero">
+
+        <div class="hero-background">
+            <img id="background-cover" alt="">
+        </div>
+
+        <div class="hero-overlay"></div>
+
+
+        <div class="anime-container">
+
+            <div class="poster-wrap">
+
+                <img
+                    id="cover"
+                    class="cover"
+                    alt="Anime cover"
+                >
+
+            </div>
+
+
+            <div class="details">
+
+                <div
+                    id="status"
+                    class="status"
+                >
+                    Loading...
+                </div>
+
+
+                <h1 id="title">
+                    Loading...
+                </h1>
+
+
+                <div class="meta">
+
+                    <span id="release">
+                        Loading...
+                    </span>
+
+                    <span class="dot">
+                        •
+                    </span>
+
+                    <span id="episode-count">
+                        Loading...
+                    </span>
+
+                </div>
+
+
+                <div class="actions">
+
+                    <button
+                        id="watch-first"
+                        class="watch-btn"
+                        type="button"
+                    >
+                        ▶ Watch Now
+                    </button>
+
+
+                    <a
+                        id="anilist"
+                        class="anilist-btn"
+                        href="#"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        AniList
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="episodes-section">
+
+        <div class="section-header">
+
+            <div>
+
+                <span class="section-label">
+                    THE HIVE
+                </span>
+
+                <h2>
+                    Episodes
+                </h2>
+
+            </div>
+
+            <span
+                id="episode-heading-count"
+                class="episode-count"
+            >
+                0 episodes
+            </span>
+
+        </div>
+
+
+        <div id="episode-grid"></div>
+
+
+        <div
+            id="episode-error"
+            class="episode-error hidden"
+        >
+            Unable to load episodes.
+        </div>
+
+    </section>
+
+</main>
+
+
+<script src="watch.js"></script>
+
+</body>
+</html>

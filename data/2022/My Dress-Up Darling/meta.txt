@@ -1,0 +1,5 @@
+name: My Dress-Up Darling
+released_date: 2022
+status: Completed
+anilist_link: https://anilist.co/anime/132405/My-Dress-Up-Darling/
+total_episodes: 12

@@ -1,0 +1,5 @@
+name: Jujutsu Kaisen (Season 1)
+released_date: 2024-01-06
+status: Completed
+anilist_link: https://anilist.co/anime/151807
+total_episodes: 24

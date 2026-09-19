@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Beeha</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <a href="index.html" class="logo">
+        <span class="bee">🐝</span>
+        Beeha
+    </a>
+
+    <div class="search-wrap">
+
+        <span class="search-icon">⌕</span>
+
+        <input
+            id="search"
+            type="search"
+            placeholder="Search anime..."
+            autocomplete="off"
+        >
+
+        <button
+            id="clear-search"
+            class="clear-search"
+            type="button"
+            aria-label="Clear search"
+        >
+            ×
+        </button>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <section class="hero">
+
+        <div class="hero-glow"></div>
+
+        <span class="eyebrow">
+            🐝 WELCOME TO THE HIVE
+        </span>
+
+        <h1>
+            Discover your
+            <span>next anime.</span>
+        </h1>
+
+        <p>
+            Browse the Beeha collection by year,
+            find something interesting, and jump
+            straight into the episodes.
+        </p>
+
+    </section>
+
+
+    <section class="library">
+
+        <div class="library-header">
+
+            <div>
+                <span class="label">LIBRARY</span>
+
+                <h2>
+                    Anime
+                </h2>
+            </div>
+
+            <div class="year-control">
+
+              <button
+                id="all-years"
+                class="year-arrow"
+                type="button"
+                >
+                All
+              </button>
+
+                <button
+        id="previous-year"
+        class="year-arrow"
+        type="button"
+        >
+        ‹
+                </button>
+
+    <span id="year-label">
+        2026
+    </span>
+
+    <button
+        id="next-year"
+        class="year-arrow"
+        type="button"
+    >
+        ›
+    </button>
+
+</div>
+
+        </div>
+
+
+        <div
+            id="anime-list"
+            class="anime-grid"
+        ></div>
+
+
+        <div
+            id="empty-state"
+            class="empty-state hidden"
+        >
+            <div class="empty-icon">🐝</div>
+
+            <h3>
+                No anime found
+            </h3>
+
+            <p>
+                Try another search.
+            </p>
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+    <span>🐝 Beeha</span>
+    <span>Made for the hive.</span>
+</footer>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
