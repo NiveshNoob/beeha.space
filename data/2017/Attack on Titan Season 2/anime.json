@@ -1,0 +1,74 @@
+{
+  "name": "Attack on Titan Season 2",
+  "released_date": "2017",
+  "status": "Completed",
+  "anilist_link": "https://anilist.co/anime/20958/Shingeki-no-Kyojin-Season-2",
+  "alt_name": "",
+  "genre": "",
+  "studio": "",
+  "type": "Anime",
+  "description": "",
+  "total_episodes": 12,
+  "episodes": [
+    {
+      "episode": 1,
+      "server1": "https://voe.sx/e/1cmtx0dvj5ru",
+      "server2": ""
+    },
+    {
+      "episode": 2,
+      "server1": "https://voe.sx/e/kqqtnyzjbrnl",
+      "server2": ""
+    },
+    {
+      "episode": 3,
+      "server1": "https://voe.sx/e/01zktpbeqfak",
+      "server2": ""
+    },
+    {
+      "episode": 4,
+      "server1": "https://voe.sx/e/d6gcmjymba56",
+      "server2": ""
+    },
+    {
+      "episode": 5,
+      "server1": "https://voe.sx/e/nuqrapv0hwxf",
+      "server2": ""
+    },
+    {
+      "episode": 6,
+      "server1": "https://voe.sx/e/okt7n81enzpz",
+      "server2": ""
+    },
+    {
+      "episode": 7,
+      "server1": "https://voe.sx/e/u5su6s74oknr",
+      "server2": ""
+    },
+    {
+      "episode": 8,
+      "server1": "https://voe.sx/e/9h0xyxl3l8eq",
+      "server2": ""
+    },
+    {
+      "episode": 9,
+      "server1": "https://voe.sx/e/tqutdsupy2df",
+      "server2": ""
+    },
+    {
+      "episode": 10,
+      "server1": "https://voe.sx/e/vxo9d3qaqlhe",
+      "server2": ""
+    },
+    {
+      "episode": 11,
+      "server1": "https://voe.sx/e/lro3uhc3vctf",
+      "server2": ""
+    },
+    {
+      "episode": 12,
+      "server1": "https://voe.sx/e/rae5r7hmvfe2",
+      "server2": ""
+    }
+  ]
+}

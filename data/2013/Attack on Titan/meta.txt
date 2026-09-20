@@ -1,0 +1,10 @@
+name: Attack on Titan
+released_date: 2013
+status: Completed
+anilist_link: https://anilist.co/anime/16498/Shingeki-no-Kyojin
+alt_name: 
+genre: 
+studio: 
+type: Anime
+description: 
+total_episodes: 25
