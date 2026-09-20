@@ -1,0 +1,10 @@
+name: SPY x FAMILY
+released_date: 2022
+status: Comoleted
+anilist_link: https://anilist.co/anime/140960/SPYFAMILY
+alt_name: 
+genre: 
+studio: 
+type: Anime
+description: 
+total_episodes: 15

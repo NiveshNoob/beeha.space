@@ -1,0 +1,10 @@
+name: SPY x FAMILY Season 3
+released_date: 2025
+status: Completed
+anilist_link: https://anilist.co/anime/177937/SPYFAMILY-Season-3
+alt_name: 
+genre: 
+studio: 
+type: Anime
+description: 
+total_episodes: 13
