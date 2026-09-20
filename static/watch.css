@@ -54,6 +54,7 @@ button, input { font: inherit; }
 .playing-episode { min-width: 140px; color: var(--yellow); font-size: .84rem; font-weight: 800; text-align: center; }
 .report-control { color: #ffb2b2; border-color: rgba(255,100,100,.3); }
 .report-control:hover { color: white; background: #b93333; border-color: #b93333; }
+.episode-notice { margin-top: 24px; padding: 22px; border: 1px solid var(--border); border-radius: 16px; color: var(--yellow); background: var(--surface); font-weight: 800; text-align: center; }
 .episode-error { padding: 50px; text-align: center; color: #888; }
 .hidden { display: none !important; }
 

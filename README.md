@@ -86,7 +86,7 @@ New:
 /watch?year=2026&anime=My%20Anime&episode=1
 ```
 
-The player uses the `server1` and `server2` URLs stored in `anime.json`.
+The player uses the `server1` and `server2` URLs stored in `anime.json`. Use `"no"` (or leave both URLs empty) for an unreleased episode; its watch page will show **Releasing** instead of opening a player. Ongoing anime (where `status` is `Ongoing`) are available from `/api/ongoing`.
 
 ## Admin reports
 

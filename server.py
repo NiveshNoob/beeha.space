@@ -331,6 +331,17 @@ async def anime_list(
     }
 
 
+@app.get("/api/ongoing")
+async def ongoing_anime():
+    """Return every anime whose status is marked as Ongoing."""
+    items = [
+        item
+        for item in discover_all_anime()
+        if str(item.get("status", "")).strip().casefold() == "ongoing"
+    ]
+    return {"items": [public_anime(item) for item in items], "total": len(items)}
+
+
 @app.get("/api/anime/{year}/{anime_name:path}")
 async def anime_detail(year: int, anime_name: str):
     if year < 1900 or year > 3000:

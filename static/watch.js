@@ -19,9 +19,19 @@ const previousEpisode = document.getElementById("previous-episode");
 const nextEpisode = document.getElementById("next-episode");
 const reportEpisode = document.getElementById("report-episode");
 const playingEpisode = document.getElementById("playing-episode");
+const episodeNotice = document.getElementById("episode-notice");
 
 let anime = null;
 let activeEpisode = null;
+
+function hasServerUrl(value) {
+    const url = String(value || "").trim();
+    return Boolean(url) && url.toLowerCase() !== "no";
+}
+
+function episodeHasServer(episode) {
+    return hasServerUrl(episode?.server1) || hasServerUrl(episode?.server2);
+}
 
 function setImageWithFallback(img, primary, fallback) {
     img.src = primary;
@@ -62,8 +72,11 @@ async function loadAnime() {
     renderEpisodes(episodes, total);
 
     const firstEpisode = episodes.find((item) => Number(item.episode) === 1);
-    watchFirst.disabled = !firstEpisode || !(firstEpisode.server1 || firstEpisode.server2);
+    watchFirst.disabled = !firstEpisode || !episodeHasServer(firstEpisode);
     watchFirst.onclick = () => firstEpisode && openEpisode(firstEpisode.episode);
+
+    const requestedData = episodes.find((item) => Number(item.episode) === requestedEpisode);
+    if (requestedData && !episodeHasServer(requestedData)) showReleasing(requestedEpisode, false);
 
 }
 
@@ -77,7 +90,7 @@ function renderEpisodes(episodes, total) {
         button.type = "button";
         button.className = "episode-btn";
         button.dataset.episode = String(number);
-        button.disabled = !data || !(data.server1 || data.server2);
+        button.disabled = !data;
         button.innerHTML = `
             <span class="episode-number">${number}</span>
             <span class="episode-name">Episode ${number}</span>`;
@@ -92,8 +105,12 @@ function openEpisode(number, updateUrl = true) {
     const data = anime?.episodes?.find((item) => Number(item.episode) === Number(number));
     if (!data) return;
 
-    const playerUrl = data.server1 || data.server2;
-    if (!playerUrl) return;
+    if (!episodeHasServer(data)) {
+        showReleasing(number, updateUrl);
+        return;
+    }
+
+    const playerUrl = hasServerUrl(data.server1) ? data.server1.trim() : data.server2.trim();
 
     const watchUrl = `/watch?year=${encodeURIComponent(year)}&anime=${encodeURIComponent(animeFolder)}&episode=${encodeURIComponent(number)}`;
     if (updateUrl) {
@@ -102,14 +119,27 @@ function openEpisode(number, updateUrl = true) {
 
     document.querySelectorAll(".episode-btn.selected").forEach((button) => button.classList.remove("selected"));
     document.querySelector(`.episode-btn[data-episode="${number}"]`)?.classList.add("selected");
+    episodeNotice.classList.add("hidden");
     activeEpisode = Number(number);
     updatePlayerControls();
     window.open(playerUrl, "_blank", "noopener");
 }
 
+function showReleasing(number, updateUrl = true) {
+    const watchUrl = `/watch?year=${encodeURIComponent(year)}&anime=${encodeURIComponent(animeFolder)}&episode=${encodeURIComponent(number)}`;
+    if (updateUrl) history.replaceState({}, "", watchUrl);
+
+    document.querySelectorAll(".episode-btn.selected").forEach((button) => button.classList.remove("selected"));
+    document.querySelector(`.episode-btn[data-episode="${number}"]`)?.classList.add("selected");
+    activeEpisode = null;
+    playerControls.classList.add("hidden");
+    episodeNotice.textContent = `Episode ${number} — Releasing`;
+    episodeNotice.classList.remove("hidden");
+}
+
 function playableEpisodes() {
     return (anime?.episodes || [])
-        .filter((item) => item.server1 || item.server2)
+        .filter(episodeHasServer)
         .map((item) => Number(item.episode))
         .sort((a, b) => a - b);
 }
