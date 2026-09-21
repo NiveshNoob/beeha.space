@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#090909">
+    <meta name="theme-color" content="#16120d">
     <title>Beeha</title>
     <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,34 +11,35 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
-<header class="navbar">
-    <a href="/" class="logo"><span class="bee">🐝</span> Beeha</a>
-    <div class="search-wrap">
-        <span class="search-icon" aria-hidden="true">⌕</span>
-        <input id="search" type="search" placeholder="Search anime..." autocomplete="off" aria-label="Search anime">
-        <button id="clear-search" class="clear-search" type="button" aria-label="Clear search">×</button>
-    </div>
-</header>
-
 <main>
-    <section class="hero">
-        <div class="hero-glow"></div>
-        <span class="eyebrow">🐝 WELCOME TO THE HIVE</span>
-        <h1>Discover your <span>next anime.</span></h1>
-        <p>Browse the Beeha collection by year, search across the whole library, and jump straight into an episode.(if an anime has problem there is a report in the anime page)</p>
+    <section class="hero" aria-label="Beeha home">
+        <header class="navbar">
+            <a href="/" class="logo"><span class="logo-mark" aria-hidden="true">🐝</span><span>beeha</span></a>
+            <nav class="main-nav" aria-label="Primary navigation">
+                <a class="active" href="/"><span>⌂</span> Home</a>
+                <a href="#library"><span>▣</span> Anime</a>
+                <a href="#about"><span>ⓘ</span> About</a>
+            </nav>
+        </header>
+        <div class="hero-controls">
+            <div class="search-wrap">
+                <span class="search-icon" aria-hidden="true">⌕</span>
+                <input id="search" type="search" placeholder="Search anime, manga, novel..." autocomplete="off" aria-label="Search anime">
+                <button id="clear-search" class="clear-search" type="button" aria-label="Clear search">×</button>
+            </div>
+            <div class="year-picker">
+                <span class="year-caption">▦ &nbsp; Year</span><button id="all-years" class="year-all active" type="button">All Years</button><button id="previous-year" class="year-arrow" type="button" aria-label="Previous year">‹</button><span id="year-label">—</span><button id="next-year" class="year-arrow" type="button" aria-label="Next year">›</button>
+            </div>
+        </div>
+        <a class="scroll-cue" href="#library"><span>⌄</span> Scroll Down</a>
     </section>
 
-    <section class="library">
+    <section id="library" class="library">
         <div class="library-header">
             <div>
                 <span class="label">LIBRARY</span>
                 <h2>Anime</h2>
-            </div>
-            <div class="year-control">
-                <button id="all-years" class="year-all" type="button">All</button>
-                <button id="previous-year" class="year-arrow" type="button" aria-label="Previous year">‹</button>
-                <span id="year-label">—</span>
-                <button id="next-year" class="year-arrow" type="button" aria-label="Next year">›</button>
+                <p id="result-count" class="result-count" aria-live="polite"></p>
             </div>
         </div>
 
@@ -48,7 +49,7 @@
     </section>
 </main>
 
-<footer class="footer">
+<footer id="about" class="footer">
     <span>🐝 Beeha</span>
     <span>FastAPI · Made for the hive.</span>
 </footer>

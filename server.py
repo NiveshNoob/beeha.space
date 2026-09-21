@@ -3,6 +3,9 @@ from __future__ import annotations
 import json
 import os
 import sqlite3
+import re
+import secrets
+import unicodedata
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from pathlib import Path
@@ -13,7 +16,7 @@ from fastapi import Body, FastAPI, HTTPException, Query, Request, status
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 ROOT = Path(__file__).resolve().parent
 DATA_DIR = ROOT / "data"
@@ -91,6 +94,14 @@ class ReportRequest(BaseModel):
     episode: int = Field(ge=1, le=100000)
     page: str | None = Field(default=None, max_length=2000)
     reason: str = Field(min_length=1, max_length=2000)
+
+    @field_validator("anime", "reason")
+    @classmethod
+    def require_text(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("must not be blank")
+        return value
 
 
 def parse_meta_text(path: Path) -> dict[str, str]:
@@ -233,6 +244,19 @@ def public_anime(anime: dict[str, Any], include_episodes: bool = False) -> dict[
     return payload
 
 
+def search_terms(value: str) -> list[str]:
+    """Normalize user text so punctuation and word order do not block a match."""
+    normalized = unicodedata.normalize("NFKD", value).casefold()
+    normalized = "".join(char for char in normalized if not unicodedata.combining(char))
+    return re.findall(r"[\w]+", normalized)
+
+
+def searchable_text(item: dict[str, Any], keys: tuple[str, ...]) -> str:
+    return " ".join(
+        " ".join(search_terms(str(item.get(key, "")))) for key in keys
+    )
+
+
 def increment_visits() -> None:
     with db_connect(VISITOR_DB) as conn:
         conn.execute("UPDATE stats SET visits = visits + 1 WHERE id = 1")
@@ -251,7 +275,7 @@ def check_admin(request: Request) -> None:
             detail="Admin reports are disabled. Set BEEHA_ADMIN_TOKEN on the server.",
         )
     supplied = request.headers.get("X-Admin-Token", "")
-    if supplied != ADMIN_TOKEN:
+    if not secrets.compare_digest(supplied, ADMIN_TOKEN):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
 
 
@@ -296,25 +320,30 @@ async def anime_list(
 ):
     items = discover_all_anime() if year is None else discover_anime(year)
 
-    query = search.strip().casefold()
-    if query:
+    terms = search_terms(search)
+    if terms:
         def matches(item: dict[str, Any]) -> tuple[int, dict[str, Any]]:
-            fields = " ".join(
-                str(item.get(key, ""))
-                for key in (
+            fields = searchable_text(
+                item,
+                (
                     "name", "alt_name", "genre", "studio", "description",
                     "status", "type", "released_date", "folder", "year",
-                )
+                ),
             ).casefold()
-            name = str(item["name"]).casefold()
+            name = searchable_text(item, ("name",))
+            matched_terms = sum(term in fields for term in terms)
+            if matched_terms != len(terms):
+                return 0, item
+
             score = 0
-            if name == query:
+            normalized_query = " ".join(terms)
+            if name == normalized_query:
                 score += 1000
-            if name.startswith(query):
+            elif name.startswith(normalized_query):
                 score += 500
-            if query in name:
+            elif all(term in name for term in terms):
                 score += 250
-            if query in fields:
+            else:
                 score += 100
             return score, item
 

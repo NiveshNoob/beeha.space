@@ -1,0 +1,10 @@
+name: Blue Box
+released_date: 2024
+status: Completed
+anilist_link: https://anilist.co/anime/170942/Ao-no-Hako
+alt_name: 
+genre: 
+studio: 
+type: Anime
+description: 
+total_episodes: 25

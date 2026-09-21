@@ -1,7 +1,8 @@
 let years = [];
 let currentYear = null;
-let showingAllYears = false;
+let showingAllYears = true;
 let requestId = 0;
+let searchController;
 
 const animeList = document.getElementById("anime-list");
 const emptyState = document.getElementById("empty-state");
@@ -12,6 +13,8 @@ const yearLabel = document.getElementById("year-label");
 const allYearsBtn = document.getElementById("all-years");
 const previousYearBtn = document.getElementById("previous-year");
 const nextYearBtn = document.getElementById("next-year");
+const library = document.getElementById("library");
+const resultCount = document.getElementById("result-count");
 
 function escapeHtml(value = "") {
     const div = document.createElement("div");
@@ -34,7 +37,7 @@ function imageWithFallback(item) {
     return img;
 }
 
-function render(items) {
+function render(items, search = "") {
     animeList.replaceChildren();
     loadingState.classList.add("hidden");
     emptyState.classList.toggle("hidden", items.length > 0);
@@ -65,6 +68,8 @@ function render(items) {
         fragment.appendChild(card);
     }
     animeList.appendChild(fragment);
+    const label = search.trim() ? ` for “${search.trim()}”` : "";
+    resultCount.textContent = `${items.length} ${items.length === 1 ? "anime" : "anime"} found${label}`;
 }
 
 async function fetchJson(url, signal) {
@@ -84,22 +89,30 @@ async function loadYears() {
 function updateYearControls() {
     yearLabel.textContent = showingAllYears ? "All" : (currentYear ?? "—");
     allYearsBtn.classList.toggle("active", showingAllYears);
-    previousYearBtn.disabled = showingAllYears || years.indexOf(currentYear) >= years.length - 1;
-    nextYearBtn.disabled = showingAllYears || years.indexOf(currentYear) <= 0;
+    previousYearBtn.disabled = years.indexOf(currentYear) >= years.length - 1;
+    nextYearBtn.disabled = years.indexOf(currentYear) <= 0;
+}
+
+function requestedYear(search = "") {
+    // Searches deliberately span the complete catalogue, even while browsing a year.
+    return (search.trim() || showingAllYears) ? null : currentYear;
 }
 
 async function loadAnime(year = currentYear, search = "") {
     const localId = ++requestId;
+    searchController?.abort();
+    searchController = new AbortController();
     loadingState.classList.remove("hidden");
     emptyState.classList.add("hidden");
+    resultCount.textContent = search.trim() ? `Searching for “${search.trim()}”…` : "Loading anime…";
     const params = new URLSearchParams();
     if (year !== null) params.set("year", String(year));
     if (search.trim()) params.set("search", search.trim());
 
     try {
-        const data = await fetchJson(`/api/anime?${params.toString()}`);
+        const data = await fetchJson(`/api/anime?${params.toString()}`, searchController.signal);
         if (localId !== requestId) return;
-        render(Array.isArray(data.items) ? data.items : []);
+        render(Array.isArray(data.items) ? data.items : [], search);
     } catch (error) {
         if (error.name === "AbortError" || localId !== requestId) return;
         console.error(error);
@@ -116,20 +129,38 @@ searchInput.addEventListener("input", () => {
     clearTimeout(searchTimer);
     const value = searchInput.value;
     clearSearch.style.display = value ? "block" : "none";
-    searchTimer = setTimeout(() => loadAnime(showingAllYears ? null : currentYear, value), 180);
+    searchTimer = setTimeout(() => {
+        loadAnime(requestedYear(value), value).then(() => {
+            if (value.trim() && value === searchInput.value) {
+                library.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        });
+    }, 220);
 });
 
 clearSearch.addEventListener("click", () => {
+    clearTimeout(searchTimer);
     searchInput.value = "";
     clearSearch.style.display = "none";
-    loadAnime(showingAllYears ? null : currentYear);
+    loadAnime(requestedYear());
     searchInput.focus();
 });
 
+searchInput.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && searchInput.value) clearSearch.click();
+    if (event.key === "Enter") {
+        clearTimeout(searchTimer);
+        const value = searchInput.value;
+        loadAnime(requestedYear(value), value).then(() => {
+            library.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+    }
+});
+
 allYearsBtn.addEventListener("click", () => {
-    showingAllYears = true;
+    showingAllYears = !showingAllYears;
     updateYearControls();
-    loadAnime(null, searchInput.value);
+    loadAnime(requestedYear(searchInput.value), searchInput.value);
 });
 
 previousYearBtn.addEventListener("click", () => {
@@ -138,7 +169,7 @@ previousYearBtn.addEventListener("click", () => {
         showingAllYears = false;
         currentYear = years[index + 1];
         updateYearControls();
-        loadAnime(currentYear, searchInput.value);
+        loadAnime(requestedYear(searchInput.value), searchInput.value);
     }
 });
 
@@ -148,14 +179,14 @@ nextYearBtn.addEventListener("click", () => {
         showingAllYears = false;
         currentYear = years[index - 1];
         updateYearControls();
-        loadAnime(currentYear, searchInput.value);
+        loadAnime(requestedYear(searchInput.value), searchInput.value);
     }
 });
 
 (async () => {
     try {
         await loadYears();
-        await loadAnime(currentYear);
+        await loadAnime(null);
     } catch (error) {
         console.error(error);
         loadingState.classList.add("hidden");

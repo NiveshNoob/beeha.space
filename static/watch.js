@@ -83,9 +83,12 @@ async function loadAnime() {
 function renderEpisodes(episodes, total) {
     episodeGrid.replaceChildren();
     const fragment = document.createDocumentFragment();
+    const episodesByNumber = new Map(
+        episodes.map((item) => [Number(item.episode), item]),
+    );
 
     for (let number = 1; number <= total; number += 1) {
-        const data = episodes.find((item) => Number(item.episode) === number);
+        const data = episodesByNumber.get(number);
         const button = document.createElement("button");
         button.type = "button";
         button.className = "episode-btn";
