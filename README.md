@@ -70,6 +70,37 @@ Open `http://127.0.0.1:8080/`.
 python generate.py
 ```
 
+## Manage catalog and watchlist
+
+`anime_manager.py` provides non-interactive commands to add, edit, delete, query,
+and list catalog entries. It uses `list.txt` as a separate watchlist and can show
+which watchlist titles are not present in `data/`.
+
+```bash
+# Query the catalog
+python anime_manager.py list --query "attack"
+python anime_manager.py show "Solo Leveling" --year 2024
+
+# Add or edit an entry
+python anime_manager.py add "Example Anime" --year 2026 --status Ongoing --genre Fantasy
+python anime_manager.py update "Example Anime" --year 2026 --total-episodes 12
+
+# Deletion intentionally requires confirmation
+python anime_manager.py delete "Example Anime" --year 2026 --yes
+
+# Manage the separate watchlist (defaults to list.txt) and compare it with data/
+python anime_manager.py watchlist add "Frieren: Beyond Journey's End" --year 2023
+python anime_manager.py watchlist compare
+python anime_manager.py watchlist compare --year 2023
+```
+
+Pass episode data with `--episodes` as a JSON array or `--episodes-file` as the
+path to a JSON file. Run `python anime_manager.py --help` for all options.
+
+Watchlist entries with a year are stored as `Anime Title | 2023`. They compare
+against the matching catalog title and year; older entries without a year remain
+compatible and compare by title only.
+
 The generator updates JSON/text metadata only. It does **not** generate `index.html` or one HTML page per episode anymore. FastAPI serves the same `/watch` page dynamically.
 
 ## Important change
