@@ -1,0 +1,10 @@
+name: Overlord IV
+released_date: 2022
+status: Completed
+anilist_link: https://anilist.co/anime/133844/Overlord-IV
+alt_name: 
+genre: 
+studio: 
+type: Anime
+description: 
+total_episodes: 13

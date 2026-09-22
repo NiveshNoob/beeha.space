@@ -1,0 +1,10 @@
+name: Robotics;Notes
+released_date: 2012
+status: Completed
+anilist_link: https://anilist.co/anime/13599/RoboticsNotes
+alt_name: 
+genre: 
+studio: 
+type: Anime
+description: 
+total_episodes: 22
