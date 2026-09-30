@@ -1,0 +1,10 @@
+name: Clevatess II: Majuu no Ou to Itsuwari no Yuusha Denshou
+released_date: 2026
+status: Completed
+anilist_link: https://anilist.co/anime/198946/Clevatess-II-Majuu-no-Ou-to-Itsuwari-no-Yuusha-Denshou
+alt_name: 
+genre: 
+studio: 
+type: Anime
+description: 
+total_episodes: 12
