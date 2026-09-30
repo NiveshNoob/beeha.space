@@ -1,0 +1,7 @@
+.venv/
+beeha.db
+beeha.db-shm
+beeha.db-wal
+rust/search/target/
+__pycache__/
+*.py[cod]

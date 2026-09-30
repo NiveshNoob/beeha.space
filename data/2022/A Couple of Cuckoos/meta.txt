@@ -1,0 +1,10 @@
+name: A Couple of Cuckoos
+released_date: 2022
+status: Completed
+anilist_link: https://anilist.co/anime/132052/A-Couple-of-Cuckoos/
+alt_name: 
+genre: 
+studio: 
+type: Anime
+description: 
+total_episodes: 24

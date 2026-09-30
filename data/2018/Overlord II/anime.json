@@ -1,0 +1,79 @@
+{
+  "name": "Overlord II",
+  "released_date": "2018",
+  "status": "Completed",
+  "anilist_link": "https://anilist.co/anime/98437/Overlord-II",
+  "alt_name": "",
+  "genre": "",
+  "studio": "",
+  "type": "Anime",
+  "description": "",
+  "total_episodes": 13,
+  "episodes": [
+    {
+      "episode": 1,
+      "server1": "https://voe.sx/e/2j93rkhkyu1l",
+      "server2": ""
+    },
+    {
+      "episode": 2,
+      "server1": "https://voe.sx/e/cv0ntu6irvue",
+      "server2": ""
+    },
+    {
+      "episode": 3,
+      "server1": "https://voe.sx/e/t62jg1nvlyqo",
+      "server2": ""
+    },
+    {
+      "episode": 4,
+      "server1": "https://voe.sx/e/a0ufmrwxq4vw",
+      "server2": ""
+    },
+    {
+      "episode": 5,
+      "server1": "https://voe.sx/e/ujgsnmwgqgyn",
+      "server2": ""
+    },
+    {
+      "episode": 6,
+      "server1": "https://voe.sx/e/uvexqavqtges",
+      "server2": ""
+    },
+    {
+      "episode": 7,
+      "server1": "https://voe.sx/e/szet87uu93kk",
+      "server2": ""
+    },
+    {
+      "episode": 8,
+      "server1": "https://voe.sx/e/ugn2m0ejwf6t",
+      "server2": ""
+    },
+    {
+      "episode": 9,
+      "server1": "https://voe.sx/e/eu84w2bz93th",
+      "server2": ""
+    },
+    {
+      "episode": 10,
+      "server1": "https://voe.sx/e/nrhl6uix5grz",
+      "server2": ""
+    },
+    {
+      "episode": 11,
+      "server1": "https://voe.sx/e/mo8foxgeyhcq",
+      "server2": ""
+    },
+    {
+      "episode": 12,
+      "server1": "https://voe.sx/e/g8ecoyyev2vu",
+      "server2": ""
+    },
+    {
+      "episode": 13,
+      "server1": "https://voe.sx/e/nva72jn33ngt",
+      "server2": ""
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+name: A Couple of Cuckoos Season 2
+released_date: 2025
+status: Completed
+anilist_link: https://anilist.co/anime/179828/Kakkou-no-Iinazuke-Season-2
+alt_name: 
+genre: 
+studio: 
+type: Anime
+description: 
+total_episodes: 12

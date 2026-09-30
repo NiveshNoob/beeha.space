@@ -1,0 +1,10 @@
+name: Attack on Titan Season 2
+released_date: 2017
+status: Completed
+anilist_link: https://anilist.co/anime/20958/Shingeki-no-Kyojin-Season-2
+alt_name: 
+genre: 
+studio: 
+type: Anime
+description: 
+total_episodes: 12

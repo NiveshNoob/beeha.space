@@ -1,0 +1,10 @@
+name: 365 Days to the Wedding
+released_date: 2024
+status: Completed
+anilist_link: https://anilist.co/anime/165790/Kekkon-Suru-tte-Hontou-desu-ka
+alt_name: 
+genre: 
+studio: 
+type: Anime
+description: 
+total_episodes: 12

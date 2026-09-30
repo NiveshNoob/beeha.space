@@ -1,0 +1,10 @@
+name: SPY x FAMILY Season 2
+released_date: 2023
+status: Completed
+anilist_link: https://anilist.co/anime/158927/SPYFAMILY-Season-2
+alt_name: 
+genre: 
+studio: 
+type: Anime
+description: 
+total_episodes: 12

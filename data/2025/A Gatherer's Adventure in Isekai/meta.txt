@@ -1,0 +1,10 @@
+name: A Gatherer's Adventure in Isekai
+released_date: 2025
+status: Completed
+anilist_link: https://anilist.co/anime/187663/Sozai-Saishuka-no-Isekai-Ryokouki
+alt_name: 
+genre: 
+studio: 
+type: Anime
+description: 
+total_episodes: 12

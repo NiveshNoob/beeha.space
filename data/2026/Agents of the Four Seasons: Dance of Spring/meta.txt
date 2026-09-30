@@ -1,0 +1,10 @@
+name: Agents of the Four Seasons: Dance of Spring
+released_date: 2026
+status: Completed
+anilist_link: https://anilist.co/anime/190143/Shunkashuutou-Daikousha-Haru-no-Mai
+alt_name: 
+genre: 
+studio: 
+type: Anime
+description: 
+total_episodes: 14

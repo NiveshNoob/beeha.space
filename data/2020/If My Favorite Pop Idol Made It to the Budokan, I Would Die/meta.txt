@@ -1,0 +1,10 @@
+name: If My Favorite Pop Idol Made It to the Budokan, I Would Die
+released_date: 2020
+status: Completed
+anilist_link: https://anilist.co/anime/104391/Oshi-ga-Budoukan-Ittekuretara-Shinu
+alt_name: 
+genre: 
+studio: 
+type: Anime
+description: 
+total_episodes: 12

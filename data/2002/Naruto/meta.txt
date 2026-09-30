@@ -1,0 +1,10 @@
+name: Naruto
+released_date: 2002
+status: Completed
+anilist_link: https://anilist.co/anime/20/NARUTO
+alt_name: 
+genre: 
+studio: 
+type: Anime
+description: 
+total_episodes: 220

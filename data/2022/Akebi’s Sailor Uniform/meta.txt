@@ -1,0 +1,10 @@
+name: Akebi’s Sailor Uniform
+released_date: 2022
+status: Completed
+anilist_link: https://anilist.co/anime/131548/Akebi-chan-no-Sailor-Fuku
+alt_name: 
+genre: 
+studio: 
+type: Anime
+description: 
+total_episodes: 12

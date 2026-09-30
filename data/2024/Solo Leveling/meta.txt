@@ -1,0 +1,10 @@
+name: Solo Leveling
+released_date: 2024
+status: Completed
+anilist_link: https://anilist.co/anime/151807/Ore-dake-Level-Up-na-Ken
+alt_name: 
+genre: 
+studio: 
+type: Anime
+description: 
+total_episodes: 12
