@@ -1,0 +1,10 @@
+name: Berserk of Gluttony
+released_date: 2023
+status: Completed
+anilist_link: 
+alt_name: 
+genre: 
+studio: 
+type: Anime
+description: 
+total_episodes: 12
