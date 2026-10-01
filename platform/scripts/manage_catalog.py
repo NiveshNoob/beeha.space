@@ -253,8 +253,93 @@ def parser():
     listing.add_argument("kind", choices=("anime", "movie", "manga")); listing.set_defaults(func=list_items)
     return p
 
+
+# OpenAI-compatible tool declarations and dispatcher for AI integrations.
+AI_TOOLS = [
+    {"type": "function", "function": {
+        "name": "catalog_list",
+        "description": "List catalog records by media kind.",
+        "parameters": {"type": "object", "properties": {
+            "kind": {"type": "string", "enum": ["anime", "movie", "manga"]}},
+            "required": ["kind"], "additionalProperties": False},
+    }},
+    {"type": "function", "function": {
+        "name": "catalog_add",
+        "description": "Create an anime, movie, or manga catalog record.",
+        "parameters": {"type": "object", "properties": {
+            "kind": {"type": "string", "enum": ["anime", "movie", "manga"]},
+            "name": {"type": "string"}, "year": {"type": ["integer", "null"]},
+            "description": {"type": "string"}, "status": {"type": "string"},
+            "languages": {"type": "array", "items": {"type": "string"}},
+            "genres": {"type": "array", "items": {"type": "string"}}},
+            "required": ["kind", "name"], "additionalProperties": False},
+    }},
+]
+
+def execute_ai_tool(name, arguments):
+    """Execute an AI tool using the same database functions as the CLI."""
+    import contextlib
+    import io
+    from types import SimpleNamespace
+
+    if not isinstance(arguments, dict):
+        raise ValueError("Tool arguments must be an object")
+    if name == "catalog_list":
+        kind = arguments.get("kind")
+        if set(arguments) != {"kind"} or kind not in ("anime", "movie", "manga"):
+            raise ValueError("catalog_list requires kind: anime, movie, or manga")
+        args, func = SimpleNamespace(kind=kind), list_items
+    elif name == "catalog_add":
+        allowed = {"kind", "name", "year", "description", "status", "languages", "genres"}
+        if set(arguments) - allowed:
+            raise ValueError("Unknown catalog_add argument")
+        kind, name_value = arguments.get("kind"), arguments.get("name")
+        if kind not in ("anime", "movie", "manga") or not isinstance(name_value, str) or not name_value.strip():
+            raise ValueError("catalog_add requires valid kind and non-empty name")
+        for key in ("languages", "genres"):
+            if key in arguments and (not isinstance(arguments[key], list) or not all(isinstance(x, str) for x in arguments[key])):
+                raise ValueError(f"{key} must be an array of strings")
+        values = dict(arguments)
+        values.update(slug=None, type="", poster_url="", banner_url="", studio="",
+                      total_episodes=0, age_rating="", synonyms="", author="", artist="",
+                      duration=None, anilist_url="", anilist_id=None)
+        values["status"] = arguments.get("status", "Unknown")
+        values["description"] = arguments.get("description", "")
+        values["languages"] = ",".join(arguments.get("languages", []))
+        values["genres"] = ",".join(arguments.get("genres", []))
+        args, func = SimpleNamespace(**values), create_item
+    else:
+        raise ValueError(f"Unknown AI tool: {name}")
+
+    output = io.StringIO()
+    with SessionLocal() as db, contextlib.redirect_stdout(output):
+        func(args, db)
+    return output.getvalue().strip()
+
+def run_tool_request():
+    import json
+    request = json.load(sys.stdin)
+    result = execute_ai_tool(request.get("name"), request.get("arguments", {}))
+    print(json.dumps({"result": result}, ensure_ascii=False))
+
 def main():
-    args = parser().parse_args()
+    cli = argparse.ArgumentParser(description=__doc__)
+    cli.add_argument("--ai-tools", action="store_true", help="print OpenAI-compatible tool definitions as JSON")
+    cli.add_argument("--tool-call", action="store_true", help="read a JSON tool request from stdin and execute it")
+    options, remaining = cli.parse_known_args()
+    if options.ai_tools:
+        import json
+        print(json.dumps(AI_TOOLS, ensure_ascii=False))
+        return
+    if options.tool_call:
+        import json
+        try:
+            run_tool_request()
+        except (ValueError, TypeError, SQLAlchemyError) as exc:
+            print(json.dumps({"error": str(exc)}, ensure_ascii=False))
+            raise SystemExit(2)
+        return
+    args = parser().parse_args(remaining)
     try:
         with SessionLocal() as db: args.func(args, db)
     except (ValueError, TypeError) as exc:
