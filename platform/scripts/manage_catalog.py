@@ -95,6 +95,8 @@ def update_item(args, db):
     print(f"Updated {args.kind}: {item.name} ({item.slug})")
 
 def add_episode(args, db):
+    if args.season < 1 or args.number < 1:
+        raise ValueError("Season and episode numbers must be positive integers")
     anime = catalog_item(db, "anime", args.anime)
     season = db.scalar(select(Season).where(Season.anime_id == anime.id, Season.season_number == args.season))
     if season is None:
@@ -103,9 +105,10 @@ def add_episode(args, db):
         db.flush()
     if db.scalar(select(Episode.id).where(Episode.season_id == season.id, Episode.episode_number == args.number)):
         raise ValueError(f"Episode {args.number} already exists in season {args.season}")
+    episode_count = db.query(Episode).join(Season).filter(Season.anime_id == anime.id).count()
     episode = Episode(season=season, episode_number=args.number, title=args.title, duration=args.duration)
     db.add(episode)
-    anime.total_episodes = max(anime.total_episodes, args.number)
+    anime.total_episodes = max(anime.total_episodes, episode_count + 1)
     db.commit()
     print(f"Created episode {episode.episode_number} for {anime.slug} (id={episode.id})")
 
@@ -193,7 +196,16 @@ def list_items(args, db):
         print(f"{item.slug}\t{item.name}\t{item.year or ''}\t{item.status}")
 
 def parser():
-    p = argparse.ArgumentParser(description=__doc__)
+    p = argparse.ArgumentParser(
+        description=__doc__,
+        epilog=(
+            "Examples:\n"
+            "  python scripts/manage_catalog.py list anime\n"
+            "  python scripts/manage_catalog.py episode --anime dr_stone --season 1 --number 1 --title 'Stone World'\n"
+            "  python scripts/manage_catalog.py source episode --id 123 --language ta --provider streamtape --url 'https://streamtape.com/e/ID/'"
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     commands = p.add_subparsers(dest="command", required=True)
     add = commands.add_parser("add", help="create anime, movie, or manga metadata")
     add.add_argument("kind", choices=("anime", "movie", "manga")); add.add_argument("--name", required=True)

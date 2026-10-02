@@ -62,6 +62,47 @@ python scripts/manage_catalog.py source-update episode 123 --inactive
 
 Use `python scripts/manage_catalog.py --help` for all commands. The root `anime_manager.py` still edits the original JSON source; run `python scripts/import_data.py` afterward to copy those changes into SQLite. CLI changes to `beeha.db` are immediately visible through the platform API and frontend.
 
+## Upload a Telegram deeplink to Streamtape
+
+`scripts/telegram_to_streamtape.py` looks up the deeplink token in the Telegram
+file-server SQLite database, downloads the referenced storage message through
+Telegram MTProto, uploads the file to Streamtape, and creates or updates the
+episode's `streamtape` source in this catalog. You identify the target using its
+anime name or slug, season number, and episode number.
+
+Install its dependencies in the platform environment, then set credentials:
+
+```bash
+pip install -r requirements.txt
+export TELEGRAM_API_ID='...'
+export TELEGRAM_API_HASH='...'
+export BOT_TOKEN='...'
+export STREAMTAPE_LOGIN='...'
+export STREAMTAPE_KEY='...'
+```
+
+List episode numbers first if you need to check which episodes exist:
+
+```bash
+python platform/scripts/telegram_to_streamtape.py lookup --anime 'Dr. Stone'
+```
+
+Then upload and attach the deeplink to that anime's episode:
+
+```bash
+python platform/scripts/telegram_to_streamtape.py upload 'https://t.me/your_bot?start=TOKEN' --anime 'Dr. Stone' --season 1 --episode 1 --language ta
+```
+
+`--season` defaults to `1`; `--language` defaults to `ta`. You can use the
+catalog slug instead of the exact anime name.
+
+The file-server database defaults to `~/bot_tell/beeha_file_server.sqlite3`;
+override it with `BEEHA_FILE_SERVER_DB` if needed. `BEEHA_DATABASE_URL` continues
+to choose the catalog database. Telegram credentials must belong to a bot that
+can read the configured storage channel. The script writes a temporary local
+copy during transfer and removes it when finished. An existing Streamtape
+source for the same episode and language is updated in place.
+
 ## Rust helper
 
 The optional `rust/search` PyO3 module contains a small text-normalization helper used by global search. Python search remains the fallback, so the service works without compiling Rust. Install Rust/Cargo and maturin (`pip install maturin`), activate the project virtual environment, then build/install from this directory with `maturin develop --manifest-path rust/search/Cargo.toml`.

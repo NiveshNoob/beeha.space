@@ -49,6 +49,22 @@ def validate(path):
         normalized.append((number, clean_url(raw.get("server1")), clean_url(raw.get("server2"))))
     return value, name, normalized, warnings
 
+def validate_files(source):
+    """Check every source JSON file without opening or changing the catalog DB."""
+    files = sorted(source.glob("*/*/anime.json"))
+    errors = 0
+    for path in files:
+        try:
+            _, name, episodes, warnings = validate(path)
+            for warning in warnings:
+                print(f"WARNING {path}: {warning}", file=sys.stderr)
+            print(f"OK {path}: {name} ({len(episodes)} valid episode(s))")
+        except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as exc:
+            errors += 1
+            print(f"ERROR {path}: {exc}", file=sys.stderr)
+    print(f"Checked {len(files)} anime file(s); {errors} file error(s).")
+    return errors
+
 def import_files(source):
     files = sorted(source.glob("*/*/anime.json"))
     errors = imported = 0
@@ -113,8 +129,18 @@ def import_files(source):
     return errors
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        epilog=(
+            "Examples:\n"
+            "  python scripts/import_data.py\n"
+            "  python scripts/import_data.py --source ../data --check-only"
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     parser.add_argument("--source", type=Path, default=ROOT.parent / "data", help="Legacy data root (year/title/anime.json)")
+    parser.add_argument("--check-only", action="store_true", help="validate source files without changing the catalog")
     args = parser.parse_args()
     if not args.source.is_dir(): parser.error(f"source directory not found: {args.source}")
-    raise SystemExit(1 if import_files(args.source) else 0)
+    run = validate_files if args.check_only else import_files
+    raise SystemExit(1 if run(args.source) else 0)
